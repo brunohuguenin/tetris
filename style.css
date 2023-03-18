@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+body {
+  height: 100vh;
+}
+
+.conteiner {
+  padding: 16px;
+}
+
+.buttons-conteiner {
+  margin-bottom: 16px;
+  width: 280px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.buttons-conteiner button {
+  border: none;
+  background: #1e2ede;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 7px;
+  height: 32px;
+  transition: filter 0.3s;
+}
+
+.buttons-conteiner button:hover {
+  filter: brightness(0.8);
+}
+
+.content-conteiner {
+  display: flex;
+}
+
+.grid {
+  width: 200px;
+  height: 400px;
+  background: green;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid div {
+  width: 20px;
+  height: 20px;
+}
+
+.content-right {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+
+.mini-grid {
+  width: 120px;
+  height: 120px;
+  background: green;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mini-grid div {
+  width: 20px;
+  height: 20px;
+}
+
+.content-right h3 {
+  font-size: 32px;
+  margin-top: 24px;
+}
+
+.shapePainted {
+  background: red;
+  border: 2px solid #000;
+}
