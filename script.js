@@ -58,7 +58,23 @@ function unDraw() {
   });
 }
 
+const $restartButton = document.getElementById('restart-button')
+$restartButton.addEventListener('click',() => {
+  window.location.reload()
+})
+
 //setInterval(moveDown, 600);
+let timeId = null;
+const $startStopButton = document.getElementById('start-button');
+$startStopButton.addEventListener('click', () => {
+  if (timeId) {
+    clearInterval(timeId);
+    timeId = null
+  } else {
+    timeId = setInterval(moveDown, 600);
+  }
+})
+
 
 function moveDown() {
   freeze();
@@ -110,15 +126,55 @@ function moveRight() {
   draw()
 }
 
+function previousRotation() {
+  if (currentRotation === 0) {
+    currentRotation = currentShape.length -1
+  } else {
+    currentRotation--
+  }
+
+  currentShape = allShapes[randomShape][currentRotation]
+}
+
+function rotate() {
+  unDraw();
+
+  if (currentRotation === currentShape.length -1) {
+    currentRotation = 0;
+  } else {
+    currentRotation++
+  }
+
+  currentShape = allShapes[randomShape][currentRotation]
+
+  const isLeftEdgeLimit = currentShape.some(squareIndex => (squareIndex + currentPosition) % gridWidth === 0);
+  const isRightEdgeLimit = currentShape.some(squareIndex => (squareIndex + currentPosition) % gridWidth === -1);
+  if (isLeftEdgeLimit && isRightEdgeLimit) {
+    previousRotation();
+  }
+
+  const isFilled = currentShape.some(squareIndex => 
+    $gridSquares[squareIndex + currentPosition].classList.contains('filled')
+    )
+    if (isFilled) {
+      previousRotation();
+    }
+
+  draw()
+}
 
 document.addEventListener('keydown', controlKeyboard);
 
 function controlKeyboard(event) {
-  if (event.key === 'ArrowLeft') {
-    moveLeft()
-  } else if (event.key === 'ArrowRight') {
-    moveRight();
-  } else if (event.key === 'ArrowDown') {
-     moveDown();
+  if (timeId) {
+    if (event.key === 'ArrowLeft') {
+      moveLeft()
+    } else if (event.key === 'ArrowRight') {
+      moveRight();
+    } else if (event.key === 'ArrowDown') {
+       moveDown();
+    } else if (event.key === 'ArrowUp') {
+      rotate()
+    }
   }
 }
