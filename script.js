@@ -1,4 +1,7 @@
 const gridWidth = 10
+const shapeFreezeAudio = new Audio('./audios/audios_audios_tetraminoFreeze.wav');
+const completedLineAudio = new Audio('./audios/audios_audios_completedLine.wav');
+
 // Shapes
 const lShape = [
   [1, 2, gridWidth + 1, gridWidth*2 + 1],
@@ -41,7 +44,7 @@ let currentPosition = 3
 let currentRotation = 0;
 let randomShape = Math.floor(Math.random() * allShapes.length);
 let currentShape = allShapes[randomShape][currentRotation];
-let $gridSquares = document.querySelectorAll('.grid div')
+let $gridSquares = Array.from(document.querySelectorAll('.grid div'));
 // $ sig algum elemento HTML que já foi criado
 
 function draw() {
@@ -64,14 +67,14 @@ $restartButton.addEventListener('click',() => {
 })
 
 //setInterval(moveDown, 600);
-let timeId = null;
+let timerId = null;
 const $startStopButton = document.getElementById('start-button');
 $startStopButton.addEventListener('click', () => {
-  if (timeId) {
-    clearInterval(timeId);
-    timeId = null
+  if (timerId) {
+    clearInterval(timerId);
+    timerId = null
   } else {
-    timeId = setInterval(moveDown, 600);
+    timerId = setInterval(moveDown, 600);
   }
 })
 
@@ -94,8 +97,13 @@ function freeze() {
     currentRotation = 0;
     randomShape = Math.floor(Math.random() * allShapes.length);
     currentShape = allShapes[randomShape][currentRotation];
-    draw()
-  }
+    draw();
+
+    checkIfRowIsFilled();
+
+    updateScore(15);
+    shapeFreezeAudio.play()
+  } 
 }
 
 function moveLeft() {
@@ -163,10 +171,47 @@ function rotate() {
   draw()
 }
 
+
+let $grid = document.querySelector('.grid');
+function checkIfRowIsFilled() {
+  for (var row = 0; row < $gridSquares.length; row += gridWidth) {
+    let currentRow = [];
+
+    for (var square = row; square < row + gridWidth; square++) {
+      currentRow.push(square);
+    }
+
+    const isRowPainted = currentRow.every(square => 
+      $gridSquares[square].classList.contains('shapePainted')
+    )
+    if (isRowPainted) {
+      const squaresRemoved = $gridSquares.splice(row, gridWidth);
+
+      squaresRemoved.forEach(square => 
+        square.classList.remove('shapePainted', 'filled')
+      )
+
+      $gridSquares = squaresRemoved.concat($gridSquares);
+      $gridSquares.forEach((square) => $grid.appendChild(square));
+
+      updateScore(35);
+      completedLineAudio.play()
+    }
+  }
+}
+
+const $score = document.querySelector('.score');
+let score = 0;
+function updateScore(updateValue) {
+  score += updateValue;
+  $score.textContent = score;
+}
+
+
 document.addEventListener('keydown', controlKeyboard);
 
 function controlKeyboard(event) {
-  if (timeId) {
+  if (timerId) {
     if (event.key === 'ArrowLeft') {
       moveLeft()
     } else if (event.key === 'ArrowRight') {

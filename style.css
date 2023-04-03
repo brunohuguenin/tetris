@@ -31,7 +31,7 @@ body {
 
 .buttons-conteiner button {
   border: none;
-  background: #1e2ede;
+  background: #e54;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
@@ -51,7 +51,7 @@ body {
 .grid {
   width: 200px;
   height: 400px;
-  background: green;
+  background: black;
   display: flex;
   flex-wrap: wrap;
 }
@@ -86,6 +86,6 @@ body {
 }
 
 .shapePainted {
-  background: red;
+  background: #fb5;
   border: 2px solid #000;
 }
