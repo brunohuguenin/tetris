@@ -70,7 +70,7 @@ body {
 .mini-grid {
   width: 120px;
   height: 120px;
-  background: green;
+  background: black;
   display: flex;
   flex-wrap: wrap;
 }

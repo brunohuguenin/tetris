@@ -1,5 +1,5 @@
 const gridWidth = 10
-const shapeFreezeAudio = new Audio('./audios/audios_audios_tetraminoFreeze.wav');
+// const shapeFreezeAudio = new Audio('./audios/audios_audios_tetraminoFreeze.wav');
 const completedLineAudio = new Audio('./audios/audios_audios_completedLine.wav');
 
 // Shapes
@@ -103,6 +103,7 @@ function freeze() {
 
     updateScore(15);
     shapeFreezeAudio.play()
+    displayNextShape()
   } 
 }
 
@@ -200,6 +201,29 @@ function checkIfRowIsFilled() {
   }
 }
 
+// Usando o a tela do mini grid 
+const $miniGridSquares = document.querySelectorAll('.mini-grid div');
+const miniGridWidth = 6;
+const nextPosition = 2;
+const possibleNextShapes = [
+  [1, 2, miniGridWidth + 1, miniGridWidth*2 + 1],
+  [miniGridWidth + 1, miniGridWidth + 2, miniGridWidth*2, miniGridWidth*2 + 1],
+  [1, miniGridWidth, miniGridWidth + 1, miniGridWidth + 2],
+  [0, 1, miniGridWidth, miniGridWidth + 1],
+  [1, miniGridWidth + 1, miniGridWidth*2 + 1, miniGridWidth*3 + 1]
+]
+function displayNextShape() {
+  let nextRadomShape = Math.floor(Math.random() ** possibleNextShapes.length);
+  const nextShape = possibleNextShapes[nextRadomShape];
+  nextShape.forEach(squareIndex => 
+    $miniGridSquares[squareIndex + nextPosition + miniGridWidth].classList.add('shapePainted')
+  )
+}
+
+displayNextShape()
+
+
+// Implementação da pontuação do usuário
 const $score = document.querySelector('.score');
 let score = 0;
 function updateScore(updateValue) {
